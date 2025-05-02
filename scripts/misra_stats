@@ -14,7 +14,7 @@ echo
 
 # Count warnings by file base name (grouped by .h/.c pairs)
 echo "--- Warnings per file base name (.h/.c pairs) ---"
-grep -E "^(Core|Drivers)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" |
+grep -E "^(libfixmath)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" |
     sed 's/:[0-9]*:[0-9]*:.*$//' |
     sed -E 's/.*\/([^\/]+)\.(c|h)$/\1/' | # Extract just the base filename
     sort | uniq -c | sort -nr
@@ -22,7 +22,7 @@ echo
 
 # Count warnings by file path
 echo "--- Warnings per file path ---"
-grep -E "^(Core|Drivers)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" |
+grep -E "^(libfixmath)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" |
     sed 's/:[0-9]*:[0-9]*:.*$//' |
     sort | uniq -c | sort -nr
 echo
@@ -48,5 +48,5 @@ echo
 
 # Total warnings
 echo "--- Total warnings ---"
-grep -E "^(Core|Drivers)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" | wc -l
+grep -E "^(libfixmath)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" | wc -l
 echo

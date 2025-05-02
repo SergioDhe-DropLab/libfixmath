@@ -10,9 +10,8 @@ cppcheck --addon=$HOME/.cppcheck_misra/my_misra.json \
     -D__STATIC_FORCEINLINE="static inline" -DMISRA_CHECK -DUSE_HAL_DRIVER \
     -DSTM32G071xx -UTEST \
     --report-type=misra-c-2012 \
-    --inline-suppr -I Core/Inc \
-    Core/Src/comms Core/Src/components Core/Src/echem Core/Src/layers \
-    Core/Src/libfixmath Core/Src/nodes Core/Src/subcircuits -q
+    --inline-suppr -I libfixmath \
+    libfixmath -q
 
 #     --inline-suppr -I Core/Inc -I Drivers/STM32G0xx_HAL_Driver/Inc \
 # -I Drivers/STM32G0xx_HAL_Driver/Inc/Legacy -I Drivers/CMSIS/Device/ST/STM32G0xx/Include \

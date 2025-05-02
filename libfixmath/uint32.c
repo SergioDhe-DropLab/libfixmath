@@ -3,7 +3,7 @@
 uint32_t uint32_log2(uint32_t inVal)
 {
     if (inVal == 0)
-        return 0;
+        return (0);
     uint32_t tempOut = 0;
     if (inVal >= (1UL << 16))
     {
@@ -29,5 +29,5 @@ uint32_t uint32_log2(uint32_t inVal)
     {
         tempOut += 1;
     }
-    return tempOut;
+    return (tempOut);
 }

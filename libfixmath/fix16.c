@@ -319,7 +319,7 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
     }
 
 #ifndef FIXMATH_NO_OVERFLOW
-    if (mid & 0xFF000000)
+    if (mid & 0xFF000000U)
     {
         return (fix16_overflow);
     }
@@ -345,7 +345,7 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
     }
 
 #ifndef FIXMATH_NO_OVERFLOW
-    if (mid & 0xFF000000)
+    if (mid & 0xFF000000U)
     {
         return (fix16_overflow);
     }
@@ -388,7 +388,7 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
     mid += (low >> 16);
 
 #ifndef FIXMATH_NO_OVERFLOW
-    if (mid & 0x80000000)
+    if (mid & 0x80000000U)
     {
         return (fix16_overflow);
     }
@@ -445,13 +445,13 @@ static uint8_t clz(uint32_t x)
         return (32);
     }
 
-    while (!(x & 0xF0000000))
+    while (!(x & 0xF0000000U))
     {
         result += 4;
         x <<= 4;
     }
 
-    while (!(x & 0x80000000))
+    while (!(x & 0x80000000U))
     {
         result += 1;
         x <<= 1;
@@ -479,7 +479,7 @@ fix16_t fix16_div(fix16_t a, fix16_t b)
     // Kick-start the division a bit.
     // This improves speed in the worst-case scenarios where N and D are large
     // It gets a lower estimate for the result by N/(D >> 17 + 1).
-    if (divider & 0xFFF00000)
+    if (divider & 0xFFF00000U)
     {
         uint32_t shifted_div = ((divider >> 17) + 1);
         quotient             = remainder / shifted_div;
@@ -528,7 +528,7 @@ fix16_t fix16_div(fix16_t a, fix16_t b)
     fix16_t result = quotient >> 1;
 
     // Figure out the sign of the result
-    if ((a ^ b) & 0x80000000)
+    if ((a ^ b) & 0x80000000U)
     {
 #ifndef FIXMATH_NO_OVERFLOW
         if (result == fix16_minimum)
@@ -785,7 +785,7 @@ fix16_t fix16_lerp32(fix16_t inArg0, fix16_t inArg1, uint32_t inFract)
 //  * @param afix16 Fixed point value for a.
 //  * @param b32 Signed 32-bit integer value for b.
 //  *
-//  * @return fix16_t Fixed point result. Returns 0x80000000 on overflow.
+//  * @return fix16_t Fixed point result. Returns 0x80000000U on overflow.
 //  */
 // fix16_t fix16_amul_int32(fix16_t afix16, int32_t b32)
 // {
@@ -823,7 +823,7 @@ fix16_t fix16_lerp32(fix16_t inArg0, fix16_t inArg1, uint32_t inFract)
 //  * @param b32 Signed 32-bit integer value for b.
 //  * @param c32 Signed 32-bit integer value for c.
 //  *
-//  * @return fix16_t Fixed point result. Returns 0x80000000 on overflow.
+//  * @return fix16_t Fixed point result. Returns 0x80000000U on overflow.
 //  */
 // fix16_t fix16_axb_c(fix16_t afix16, int32_t b32, int32_t c32)
 // {

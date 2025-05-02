@@ -21,7 +21,7 @@ const fix16_t testcases[] = {
     0xFFFF, -0xFFFF, 0x1FFFF, -0x1FFFF, 0x3FFFF, -0x3FFFF,
 
     // Smallest and largest values
-    0x7FFFFFFF, 0x80000000,
+    0x7FFFFFFF, 0x80000000U,
 
     // Large random numbers
     831858892, 574794913, 2147272293, -469161054, -961611615, 1841960234,

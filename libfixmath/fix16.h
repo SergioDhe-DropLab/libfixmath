@@ -48,7 +48,7 @@ extern "C"
 
     static const fix16_t FOUR_DIV_PI = 0x145F3; /*!< Fix16 value of 4/PI */
     static const fix16_t _FOUR_DIV_PI2 =
-        (fix16_t)0xFFFF9840; /*!< Fix16 value of -4/PI² */
+        (fix16_t)0xFFFF9840U; /*!< Fix16 value of -4/PI² */
     static const fix16_t X4_CORRECTION_COMPONENT =
         0x399A;                                 /*!< Fix16 value of 0.225 */
     static const fix16_t PI_DIV_4 = 0x0000C90F; /*!< Fix16 value of PI/4 */
@@ -58,9 +58,9 @@ extern "C"
     static const fix16_t fix16_maximum =
         0x7FFFFFFF; /*!< the maximum value of fix16_t */
     static const fix16_t fix16_minimum =
-        (fix16_t)0x80000000; /*!< the minimum value of fix16_t */
+        (fix16_t)0x80000000U; /*!< the minimum value of fix16_t */
     static const fix16_t fix16_overflow =
-        (fix16_t)0x80000000; /*!< the value used to indicate overflows when
+        (fix16_t)0x80000000U; /*!< the value used to indicate overflows when
                        FIXMATH_NO_OVERFLOW is not specified */
 
     static const fix16_t fix16_pi  = 205887;     /*!< fix16_t value of pi */
@@ -301,7 +301,7 @@ extern fix16_t fix16_ssub(fix16_t a, fix16_t b) FIXMATH_FUNC_ATTRS;
         {
             // minimum negative number has same representation as
             // its absolute value in unsigned
-            return (0x80000000);
+            return (0x80000000U);
         }
         else
         {

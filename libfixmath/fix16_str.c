@@ -19,41 +19,52 @@ static inline int isspace(int c)
 #include <ctype.h>
 #endif
 
-#ifdef TEST
-#include <stdio.h>
-#endif
-
-static const uint32_t scales[8] = {
-    /* 5 decimals is enough for full fix16_t precision */
-    1, 10, 100, 1000, 10000, 100000, 100000, 100000};
-
-static char* itoa_loop(char* buf, uint32_t scale, uint32_t value, bool skip)
+static char* itoa_loop(char* buf_start, uint32_t scale_start,
+                       uint32_t value_start, bool skip_start)
 {
-    while (scale)
-    {
-        unsigned digit = (value / scale);
+    char*    buf   = buf_start;
+    uint32_t scale = scale_start;
+    uint32_t value = value_start;
+    bool     skip  = skip_start;
 
-        if (!skip || digit || scale == 1)
+    while (scale != 0U)
+    {
+        uint8_t digit = (uint8_t)(value / scale);
+
+        if ((!skip) || (digit != 0U) || (scale == 1U))
         {
-            skip   = false;
-            *buf++ = '0' + (char)digit;
+            skip        = false;
+
+            uint8_t chr = ((uint8_t)'0' + digit);
+            *buf        = (char)chr;
+            buf++;
+
             value %= scale;
         }
 
-        scale /= 10;
+        scale /= 10U;
     }
     return (buf);
 }
 
-void fix16_to_str(fix16_t value, char* buf, int decimals)
+void fix16_to_str(fix16_t value, char* buf_start, int decimals)
 {
+    char*    buf    = buf_start;
+
     uint32_t uvalue = (value >= 0) ? (uint32_t)value : (uint32_t)(-value);
     if (value < 0)
-        *buf++ = '-';
+    {
+        *buf = '-';
+        buf++;
+    }
+
+    static const uint32_t scales[8] = {
+        /* 5 decimals is enough for full fix16_t precision */
+        1U, 10U, 100U, 1000U, 10000U, 100000U, 100000U, 100000U};
 
     /* Separate the integer and decimal parts of the value */
-    unsigned intpart  = uvalue >> 16;
-    uint32_t fracpart = uvalue & 0xFFFF;
+    unsigned intpart  = uvalue >> 16U;
+    uint32_t fracpart = uvalue & 0xFFFFU;
     uint32_t scale    = scales[decimals & 7];
     fracpart          = (uint32_t)fix16_mul((fix16_t)fracpart, (fix16_t)scale);
 
@@ -68,41 +79,51 @@ void fix16_to_str(fix16_t value, char* buf, int decimals)
     buf = itoa_loop(buf, 10000, intpart, true);
 
     /* Format decimal part (if any) */
-    if (scale != 1)
+    if (scale != 1U)
     {
-        *buf++ = '.';
-        buf    = itoa_loop(buf, scale / 10, fracpart, false);
+        *buf = '.';
+        buf++;
+        buf = itoa_loop(buf, scale / 10U, fracpart, false);
     }
 
     *buf = '\0';
 }
 
-fix16_t fix16_from_str(const char* buf)
+fix16_t fix16_from_str(const char* buf_start)
 {
-    while (isspace((unsigned char)*buf))
+    const char* buf = buf_start;
+
+    while (isspace((unsigned char)*buf) != 0)
+    {
         buf++;
+    }
 
     /* Decode the sign */
     bool negative = (*buf == '-');
-    if (*buf == '+' || *buf == '-')
+    if ((*buf == '+') || (*buf == '-'))
+    {
         buf++;
+    }
 
     /* Decode the integer part */
     uint32_t intpart = 0;
     int      count   = 0;
-    while (isdigit((unsigned char)*buf))
+    while (isdigit((unsigned char)*buf) != 0)
     {
         intpart *= 10;
-        intpart += *buf++ - '0';
+        intpart += *buf - '0';
+        buf++;
         count++;
     }
 
 #ifdef FIXMATH_NO_OVERFLOW
     if (count == 0)
+    {
         return (fix16_overflow);
+    }
 #else
-    if (count == 0 || count > 5 || intpart > 32768 ||
-        (!negative && intpart > 32767))
+    if ((count == 0) || (count > 5) || (intpart > 0x8000U) ||
+        (!negative && (intpart > 0x7FFFU)))
     {
         return (fix16_overflow);
     }
@@ -111,17 +132,18 @@ fix16_t fix16_from_str(const char* buf)
     fix16_t value = (fix16_t)(intpart << 16);
 
     /* Decode the decimal part */
-    if (*buf == '.' || *buf == ',')
+    if ((*buf == '.') || (*buf == ','))
     {
         buf++;
 
-        uint32_t fracpart = 0;
-        uint32_t scale    = 1;
-        while (isdigit((unsigned char)*buf) && scale < 100000)
+        uint32_t fracpart = 0U;
+        uint32_t scale    = 1U;
+        while (isdigit((unsigned char)*buf) && (scale < 100000U))
         {
             scale *= 10;
             fracpart *= 10;
-            fracpart += *buf++ - '0';
+            fracpart += *buf - '0';
+            buf++;
         }
 
         value += fix16_div((fix16_t)fracpart, (fix16_t)scale);

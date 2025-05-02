@@ -5,11 +5,11 @@ int test_abs_short(void)
 {
     for (unsigned i = 0; i < TESTCASES_COUNT; ++i)
     {
-        fix16_t a      = testcases[i];
-        double fa      = fix16_to_dbl(a);
-        fix16_t result = fix16_abs(a);
-        double fresult = fabs(fa);
-        double min     = fix16_to_dbl(fix16_minimum);
+        fix16_t a       = testcases[i];
+        double  fa      = fix16_to_dbl(a);
+        fix16_t result  = fix16_abs(a);
+        double  fresult = fabs(fa);
+        double  min     = fix16_to_dbl(fix16_minimum);
         if (fa <= min)
         {
 #ifndef FIXMATH_NO_OVERFLOW
@@ -37,16 +37,16 @@ int test_add_short(void)
     {
         for (unsigned j = 0; j < TESTCASES_COUNT; ++j)
         {
-            fix16_t a      = testcases[i];
-            fix16_t b      = testcases[j];
-            fix16_t result = fix16_add(a, b);
+            fix16_t a       = testcases[i];
+            fix16_t b       = testcases[j];
+            fix16_t result  = fix16_add(a, b);
 
-            double fa      = fix16_to_dbl(a);
-            double fb      = fix16_to_dbl(b);
-            double fresult = fa + fb;
+            double  fa      = fix16_to_dbl(a);
+            double  fb      = fix16_to_dbl(b);
+            double  fresult = fa + fb;
 
-            double max = fix16_to_dbl(fix16_maximum);
-            double min = fix16_to_dbl(fix16_minimum);
+            double  max     = fix16_to_dbl(fix16_maximum);
+            double  min     = fix16_to_dbl(fix16_minimum);
             if ((fa + fb > max) || (fa + fb < min))
             {
 #ifndef FIXMATH_NO_OVERFLOW
@@ -100,16 +100,16 @@ int test_mul_short()
     {
         for (unsigned j = 0; j < TESTCASES_COUNT; ++j)
         {
-            fix16_t a      = testcases[i];
-            fix16_t b      = testcases[j];
-            fix16_t result = fix16_mul(a, b);
+            fix16_t a       = testcases[i];
+            fix16_t b       = testcases[j];
+            fix16_t result  = fix16_mul(a, b);
 
-            double fa      = fix16_to_dbl(a);
-            double fb      = fix16_to_dbl(b);
-            double fresult = fa * fb;
+            double  fa      = fix16_to_dbl(a);
+            double  fb      = fix16_to_dbl(b);
+            double  fresult = fa * fb;
 
-            double max = fix16_to_dbl(fix16_maximum);
-            double min = fix16_to_dbl(fix16_minimum);
+            double  max     = fix16_to_dbl(fix16_maximum);
+            double  min     = fix16_to_dbl(fix16_minimum);
 
             if (fa * fb > max || fa * fb < min)
             {
@@ -175,14 +175,14 @@ int test_div_short()
             // We don't require a solution for /0 :)
             if (b == 0)
                 continue;
-            fix16_t result = fix16_div(a, b);
+            fix16_t result  = fix16_div(a, b);
 
-            double fa      = fix16_to_dbl(a);
-            double fb      = fix16_to_dbl(b);
-            double fresult = fa / fb;
+            double  fa      = fix16_to_dbl(a);
+            double  fb      = fix16_to_dbl(b);
+            double  fresult = fa / fb;
 
-            double max = fix16_to_dbl(fix16_maximum);
-            double min = fix16_to_dbl(fix16_minimum);
+            double  max     = fix16_to_dbl(fix16_maximum);
+            double  min     = fix16_to_dbl(fix16_minimum);
 
             if ((fa / fb) > max || (fa / fb) < min)
             {
@@ -213,16 +213,16 @@ int test_sub_short()
     {
         for (unsigned j = 0; j < TESTCASES_COUNT; ++j)
         {
-            fix16_t a      = testcases[i];
-            fix16_t b      = testcases[j];
-            fix16_t result = fix16_sub(a, b);
+            fix16_t a       = testcases[i];
+            fix16_t b       = testcases[j];
+            fix16_t result  = fix16_sub(a, b);
 
-            double fa      = fix16_to_dbl(a);
-            double fb      = fix16_to_dbl(b);
-            double fresult = fa - fb;
+            double  fa      = fix16_to_dbl(a);
+            double  fb      = fix16_to_dbl(b);
+            double  fresult = fa - fb;
 
-            double max = fix16_to_dbl(fix16_maximum);
-            double min = fix16_to_dbl(fix16_minimum);
+            double  max     = fix16_to_dbl(fix16_maximum);
+            double  min     = fix16_to_dbl(fix16_minimum);
             if ((fa - fb > max) || (fa - fb < min))
             {
 #ifndef FIXMATH_NO_OVERFLOW

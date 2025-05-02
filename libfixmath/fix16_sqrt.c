@@ -11,11 +11,11 @@
  */
 fix16_t fix16_sqrt(fix16_t inValue)
 {
-    uint8_t neg     = (inValue < 0);
+    uint8_t  neg    = (inValue < 0);
     uint32_t num    = fix_abs(inValue);
     uint32_t result = 0;
     uint32_t bit;
-    uint8_t n;
+    uint8_t  n;
 
     // Many numbers will be less than 15, so
     // this gives a good balance between time spent

@@ -1,0 +1,11 @@
+# Format Style Options - Created with Clang Power Tools
+---
+AlignConsecutiveAssignments: AcrossEmptyLines
+AlignConsecutiveBitFields: AcrossEmptyLines
+AlignConsecutiveDeclarations: AcrossEmptyLines
+AlignConsecutiveMacros: AcrossEmptyLines
+BasedOnStyle: Microsoft
+ColumnLimit: 80
+PointerAlignment: Left
+TabWidth: 4
+...

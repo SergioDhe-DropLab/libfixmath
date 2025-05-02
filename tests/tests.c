@@ -38,7 +38,7 @@ const fix16_t testcases[] = {
 
 unsigned stack_depth = 0;
 
-int main()
+int      main()
 {
     printf("\033[1;34m\nVARIANT: \033[39m" STR2(PREFIX) "\033[0m\n");
 #if 0
@@ -77,7 +77,7 @@ int main()
     TEST(test_sqrt());
     TEST(test_lerp());
     TEST(test_macros());
-    //TEST(test_str());
+    // TEST(test_str());
 #endif
     return 0;
 }

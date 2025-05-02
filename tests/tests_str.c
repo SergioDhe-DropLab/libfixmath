@@ -62,8 +62,8 @@ int test_str_extended()
 {
 
     fix16_t value = fix16_minimum;
-    char testbuf[13];
-    char goodbuf[13];
+    char    testbuf[13];
+    char    goodbuf[13];
 
     while (value < fix16_maximum)
     {

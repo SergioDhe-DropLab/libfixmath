@@ -5,7 +5,8 @@
 
 /* Tools for profiling */
 
-typedef struct {
+typedef struct
+{
     uint32_t min;
     uint32_t max;
     uint32_t sum;
@@ -22,6 +23,6 @@ void start_timing();
 uint16_t end_timing();
 
 // Print a value to console, along with a descriptive label
-void print_value(const char *label, int32_t value);
+void print_value(const char* label, int32_t value);
 
-void print(const char *label, cyclecount_t *count);
+void print(const char* label, cyclecount_t* count);

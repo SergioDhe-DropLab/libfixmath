@@ -1,11 +1,11 @@
 #include "tests_macros.h"
 #include "tests.h"
 
-#define DO_TEST(i, m)                                         \
-    do                                                        \
-    {                                                         \
-        ASSERT_EQ_INT(F16(i##.##m), F16C(i, m));              \
-        ASSERT_EQ_INT(F16(i##.##m), fix16_from_dbl(i##.##m)); \
+#define DO_TEST(i, m)                                                          \
+    do                                                                         \
+    {                                                                          \
+        ASSERT_EQ_INT(F16(i##.##m), F16C(i, m));                               \
+        ASSERT_EQ_INT(F16(i##.##m), fix16_from_dbl(i##.##m));                  \
     } while (0)
 
 int test_macros()

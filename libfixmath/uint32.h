@@ -12,9 +12,10 @@ extern "C"
 #include <stdint.h>
 #endif
 
-/*! Performs an unsigned log-base2 on the specified unsigned integer and returns the result.
-*/
-extern uint32_t uint32_log2(uint32_t inVal);
+    /*! Performs an unsigned log-base2 on the specified unsigned integer and
+     * returns the result.
+     */
+    extern uint32_t uint32_log2(uint32_t inVal);
 
 #ifdef __cplusplus
 }

@@ -1,8 +1,8 @@
 #ifndef __hiclock_h__
 #define __hiclock_h__
 
-#include <stdint.h>
 #include <inttypes.h>
+#include <stdint.h>
 
 #if defined(__unix__)
 #include <sys/time.h>
@@ -16,12 +16,12 @@ typedef uint64_t hiclock_t;
 #define PRIuHICLOCK PRIu64
 #define PRIiHICLOCK PRIi64
 typedef LONGLONG hiclock_t;
-extern LONGLONG HICLOCKS_PER_SEC;
-extern void hiclock_init();
+extern LONGLONG  HICLOCKS_PER_SEC;
+extern void      hiclock_init();
 #else
 #include <time.h>
-#define PRIuHICLOCK PRIu32
-#define PRIiHICLOCK PRIi32
+#define PRIuHICLOCK      PRIu32
+#define PRIiHICLOCK      PRIi32
 typedef clock_t hiclock_t;
 #define HICLOCKS_PER_SEC CLOCKS_PER_SEC
 #define hiclock_init()
@@ -30,4 +30,3 @@ typedef clock_t hiclock_t;
 extern hiclock_t hiclock();
 
 #endif
-

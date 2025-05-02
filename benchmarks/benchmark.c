@@ -14,7 +14,7 @@
 // cyclecount_update will set them.
 #define CYCLECOUNT_INIT                                                        \
     {                                                                          \
-        0xFFFFFFFF, 0, 0, 0                                                    \
+        0xFFFFFFFFU, 0, 0, 0                                                   \
     }
 
 // Update cyclecount_t structure after a single measurement has been made.

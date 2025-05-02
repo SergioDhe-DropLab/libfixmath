@@ -1,5 +1,5 @@
-#ifndef __libfixmath_int64_h__
-#define __libfixmath_int64_h__
+#ifndef libfixmath_int64_h__
+#define libfixmath_int64_h__
 
 #ifdef __cplusplus
 extern "C"

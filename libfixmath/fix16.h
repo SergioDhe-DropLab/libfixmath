@@ -1,5 +1,5 @@
-#ifndef __libfixmath_fix16_h__
-#define __libfixmath_fix16_h__
+#ifndef libfixmath_fix16_h__
+#define libfixmath_fix16_h__
 
 // // OPTION DEFINES FOR STM32 USE - Sergio
 // #define FIXMATH_NO_CTYPE

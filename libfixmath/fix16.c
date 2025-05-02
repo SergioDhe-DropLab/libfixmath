@@ -510,7 +510,7 @@ fix16_t fix16_div(fix16_t a, fix16_t b)
         quotient += (uint64_t)div << bit_pos;
 
 #ifndef FIXMATH_NO_OVERFLOW
-        if (div & ~(0xFFFFFFFF >> bit_pos))
+        if (div & ~(0xFFFFFFFFU >> bit_pos))
         {
             return (fix16_overflow);
         }
@@ -793,7 +793,7 @@ fix16_t fix16_lerp32(fix16_t inArg0, fix16_t inArg1, uint32_t inFract)
 
 //     fix16_t retval = (fix16_t)result.lo;
 
-//     // High word should be 0x00000000 or 0xFFFFFFFF
+//     // High word should be 0x00000000 or 0xFFFFFFFFU
 //     if ((result.hi != 0) && ((uint32_t)result.hi != 0xFFFFFFFFU))
 //     {
 //         retval = fix16_overflow;
@@ -836,7 +836,7 @@ fix16_t fix16_lerp32(fix16_t inArg0, fix16_t inArg1, uint32_t inFract)
 
 //         retval         = (fix16_t)result.lo;
 
-//         // High word should be 0x00000000 or 0xFFFFFFFF
+//         // High word should be 0x00000000 or 0xFFFFFFFFU
 //         if ((result.hi != 0) && ((uint32_t)result.hi != 0xFFFFFFFFU))
 //         {
 //             retval = fix16_overflow;

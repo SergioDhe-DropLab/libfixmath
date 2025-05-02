@@ -24,9 +24,9 @@ int test_lerp()
     ASSERT_EQ_INT(fix16_lerp32(0, 2, 0), 0);
     ASSERT_EQ_INT(fix16_lerp32(0, 2, 0x7fffffff), 0);
     ASSERT_EQ_INT(fix16_lerp32(0, 2, 0x80000000), 1);
-    ASSERT_EQ_INT(fix16_lerp32(0, 2, 0xffffffff), 1);
+    ASSERT_EQ_INT(fix16_lerp32(0, 2, 0xFFFFFFFFU), 1);
     ASSERT_EQ_INT(fix16_lerp32(fix16_minimum, fix16_maximum, 0), fix16_minimum);
-    ASSERT_EQ_INT(fix16_lerp32(fix16_minimum, fix16_maximum, 0xffffffff),
+    ASSERT_EQ_INT(fix16_lerp32(fix16_minimum, fix16_maximum, 0xFFFFFFFFU),
                   (fix16_maximum - 1));
     ASSERT_EQ_INT(fix16_lerp32(-fix16_maximum, fix16_maximum, 0x80000000), 0);
     return 0;

@@ -48,9 +48,9 @@ int main(int argc, char** argv)
 
     hiclock_init();
 
-    uintptr_t args = (1 << 8);
-    uintptr_t iter = (1 << 8);
-    uintptr_t pass = (1 << 8);
+    uintptr_t args = (1U << 8U);
+    uintptr_t iter = (1U << 8U);
+    uintptr_t pass = (1U << 8U);
 
     uintptr_t i;
     srand(time(NULL));

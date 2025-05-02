@@ -1,33 +1,41 @@
 #include "uint32.h"
 
-uint32_t uint32_log2(uint32_t inVal)
+uint32_t uint32_log2(uint32_t input)
 {
-    if (inVal == 0)
-        return (0);
-    uint32_t tempOut = 0;
-    if (inVal >= (1UL << 16))
+    uint32_t retval = 0U;
+
+    if (input != 0U)
     {
-        inVal >>= 16;
-        tempOut += 16;
+        uint32_t temp = input;
+        if (temp >= ((uint32_t)1U << 16))
+        {
+            temp >>= 16U;
+            retval += 16U;
+        }
+
+        if (temp >= ((uint32_t)1U << 8U))
+        {
+            temp >>= 8U;
+            retval += 8U;
+        }
+
+        if (temp >= ((uint32_t)1U << 4U))
+        {
+            temp >>= 4U;
+            retval += 4U;
+        }
+
+        if (temp >= ((uint32_t)1U << 2U))
+        {
+            temp >>= 2U;
+            retval += 2U;
+        }
+
+        if (temp >= ((uint32_t)1U << 1U))
+        {
+            retval += 1U;
+        }
     }
-    if (inVal >= (1 << 8))
-    {
-        inVal >>= 8;
-        tempOut += 8;
-    }
-    if (inVal >= (1 << 4))
-    {
-        inVal >>= 4;
-        tempOut += 4;
-    }
-    if (inVal >= (1 << 2))
-    {
-        inVal >>= 2;
-        tempOut += 2;
-    }
-    if (inVal >= (1 << 1))
-    {
-        tempOut += 1;
-    }
-    return (tempOut);
+
+    return (retval);
 }

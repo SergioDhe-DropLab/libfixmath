@@ -6,6 +6,9 @@
 
 int main(int argc, char** argv)
 {
+    (void)argc;
+    (void)argv;
+
     FILE* fp = fopen("fix16_trig_sin_lut.h", "wb");
     if (fp == NULL)
     {
@@ -23,7 +26,7 @@ int main(int argc, char** argv)
     fix16_t   fix16_sin_lut[fix16_sin_lut_count];
 
     uintptr_t i;
-    for (i = 0; i < fix16_sin_lut_count; i++)
+    for (i = 0; (fix16_t)i < fix16_sin_lut_count; i++)
         fix16_sin_lut[i] = fix16_from_dbl(sin(fix16_to_dbl(i)));
     for (i--; fix16_sin_lut[i] == fix16_one; i--, fix16_sin_lut_count--)
         ;
@@ -33,7 +36,7 @@ int main(int argc, char** argv)
     fprintf(fp, "static uint16_t _fix16_sin_lut[%" PRIi32 "] = {",
             fix16_sin_lut_count);
 
-    for (i = 0; i < fix16_sin_lut_count; i++)
+    for (i = 0; (fix16_t)i < fix16_sin_lut_count; i++)
     {
         if ((i & 7) == 0)
             fprintf(fp, "\n\t");

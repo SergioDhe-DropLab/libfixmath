@@ -27,6 +27,32 @@
         <id>missingIncludeSystem</id>
     </suppress>
 
+
+
+
+    <!-- Permanently ignored MISRA rules -->
+    <suppress>
+        <!-- "A project should not contain unused macro declarations." -->
+        <!-- Many macros included are not directly used but are useful as documentation and for completeness -->
+        <id>misra-c2012-2.5</id>
+    </suppress>
+    <suppress>
+        <!-- ""Functions and objects should not be defined with external linkage if they are referenced in only one translation unit" -->
+        <!--  -->
+        <id>misra-c2012-8.7</id>
+    </suppress>
+    <suppress>
+        <!-- "A conversion should not be performed between a pointer to object and an integer type." -->
+        <!-- This bans conversions to/from uintptr_t, making complex pointer conversions impossible. -->
+        <id>misra-c2012-11.4</id>
+    </suppress>
+    <suppress>
+        <!-- "A conversion should not be performed from pointer to void into pointer to object." -->
+        <!-- This bans conversions from void* to other pointer types, making complex pointer conversions impossible. -->
+        <id>misra-c2012-11.5</id>
+    </suppress>
+
+    <!-- Rules ignored during development -->
     <suppress>
         <!-- Unused functions can be ignored during development and cleaned up later for release -->
         <id>unusedFunction</id>
@@ -34,9 +60,5 @@
     <suppress>
         <!-- The function 'xyz' should have static linkage since it is not used outside of its translation unit. -->
         <id>staticFunction</id>
-    </suppress>
-    <suppress>
-        <!-- Functions and objects should not be defined with external linkage if they are referenced in only one translation unit -->
-        <id>misra-c2012-8.7</id>
     </suppress>
 </suppressions>

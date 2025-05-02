@@ -51,6 +51,12 @@
         <!-- This bans conversions from void* to other pointer types, making complex pointer conversions impossible. -->
         <id>misra-c2012-11.5</id>
     </suppress>
+    <suppress>
+        <!-- "A function should have a single point of exit at the end." -->
+        <!-- Makes many longer functions much less readable/ -->
+        <id>misra-c2012-15.5</id>
+    </suppress>
+
 
     <!-- Rules ignored during development -->
     <suppress>

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+echo ""
+
+binaries=$(find . -maxdepth 2 -name "*.elf" -not -name "temp.elf")
+
+# Initialize return value to 0 (success)
+retval=0
+
+# echo "$binaries"
+
+for binary in $binaries; do
+    filename=$(basename "$binary")
+    directory=$(dirname "$binary")
+    # Fix extension to match the hash algorithm being used
+    hash_file="$directory/.$filename.sha256"
+
+    temp_file="$directory/temp.elf"
+
+    #copy file
+    cp "$binary" "$temp_file"
+    perl -pi -e 's/Build Date: \0[0-9\-]{10}/Build Date:  0000-00-00/g' $temp_file
+    perl -pi -e 's/Build #: \0[0-9]{4}/Build #:  0000/g' $temp_file
+    perl -pi -e 's/Commit hash: \0[0-9a-f]{40}/Commit hash:  0000000000000000000000000000000000000000/g' $temp_file
+
+    # Calculate hash once and reuse it
+    current_hash=$(sha256sum "$temp_file" | awk '{print $1}')
+
+    # Check if the hash file already exists
+    if [ -f "$hash_file" ]; then
+        # Read the existing hash from the file
+        read -r existing_hash <"$hash_file"
+
+        if [ "$existing_hash" = "$current_hash" ]; then
+            # echo "Hash for $filename is unchanged"
+            :
+        else
+            echo "Hash for $filename has changed"
+            retval=1
+            echo "$current_hash" >"$hash_file"
+        fi
+    else
+        echo ""
+        # echo "Creating new hash for $filename"
+        # echo "$current_hash" >"$hash_file"
+    fi
+
+    rm "$temp_file"
+done
+
+# echo "retval: $retval"
+# Return the status code
+exit $retval

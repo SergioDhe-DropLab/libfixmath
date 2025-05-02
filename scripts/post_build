@@ -1,0 +1,36 @@
+#!/bin/bash
+
+echo ""
+cd ../
+
+./scripts/update_version
+
+echo "Formatting Core files..."
+./scripts/format_core
+
+#if ! [[ -f .run_tests ]]; then
+#    exit 0
+#fi
+
+# Run unit tests using ceedling
+echo ""
+echo "Running tests..."
+echo ""
+test_output=$(ceedling test:all | grep "OVERALL TEST SUMMARY" -A 5)
+test_fails=$(echo "$test_output" | grep "FAILED:")
+
+if [[ -n $test_fails ]]; then
+
+    echo "$test_output"
+
+    if [[ $test_fails == *" 0"* ]]; then
+        echo "All tests passed!"
+    else
+        echo "Tests failed!"
+        exit 1
+    fi
+else
+    echo "No tests found!"
+fi
+
+echo ""

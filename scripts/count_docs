@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo "Checking for doxygen comments..."
+
+DIR="${1:-./Core/}"
+OUTFILE="${2:-./Core/docs/doxygen_count.csv}"
+
+rm  "$OUTFILE"
+
+echo "filename,occurrences,ratio" > "$OUTFILE"
+find "$DIR" -type f | while read -r FILE; do
+  if grep -q " STMicroelectronics." "$FILE"; then
+    continue
+  fi
+  COUNT=$(grep -o "@brief" "$FILE" 2>/dev/null | wc -l)
+  LINES=$(wc -l < "$FILE")
+  RATIO=0
+  [ "$LINES" -gt 0 ] && RATIO=$(awk -v c="$COUNT" -v l="$LINES" 'BEGIN{printf "%.0f", 10000*c/l}')
+  if [ "$COUNT" -gt 0 ]; then
+    echo "$(basename "$FILE"),$COUNT,$RATIO"
+  fi
+done | sort -t, -k3,3n >> "$OUTFILE"

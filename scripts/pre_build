@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo ""
+cd ../
+
+# ./scripts/clean_cmake
+
+# echo "Updated commit hash in version.h"

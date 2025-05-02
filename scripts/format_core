@@ -1,0 +1,5 @@
+#!/bin/bash
+find . -wholename "./*.h" -exec clang-format-16 -i {} \;
+find . -wholename "./*.c" -exec clang-format-16 -i {} \;
+
+#THIS SCRIPT REQUIRES UNIX-STYLE LINE ENDINGS

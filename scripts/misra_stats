@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Input file can be provided as argument or default to build/misra.log
+INPUT_FILE="${1:-build/misra.log}"
+
+# Check if file exists
+if [ ! -f "$INPUT_FILE" ]; then
+    echo "Error: File $INPUT_FILE not found."
+    exit 1
+fi
+
+echo "===== MISRA Compliance Statistics ====="
+echo
+
+# Count warnings by file base name (grouped by .h/.c pairs)
+echo "--- Warnings per file base name (.h/.c pairs) ---"
+grep -E "^(Core|Drivers)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" |
+    sed 's/:[0-9]*:[0-9]*:.*$//' |
+    sed -E 's/.*\/([^\/]+)\.(c|h)$/\1/' | # Extract just the base filename
+    sort | uniq -c | sort -nr
+echo
+
+# Count warnings by file path
+echo "--- Warnings per file path ---"
+grep -E "^(Core|Drivers)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" |
+    sed 's/:[0-9]*:[0-9]*:.*$//' |
+    sort | uniq -c | sort -nr
+echo
+
+# Count warnings by MISRA rule (like [8.9])
+echo "--- Warnings by MISRA rule ---"
+grep -o "\[[0-9]\+\.[0-9]\+\]" "$INPUT_FILE" |
+    sort | uniq -c | sort -nr
+echo
+
+# Count warnings by type
+echo "--- Warnings by type (excluding capital letter types) ---"
+grep -o "\[[^A-Z][a-zA-Z0-9._-]*\]" "$INPUT_FILE" |
+    sort | uniq -c | sort -nr
+echo
+
+# Count warnings by severity class
+echo "--- Warnings by severity class ---"
+grep -E "^(Core|Drivers)/[^:]+\.[ch]:[0-9]+:[0-9]+: [A-Za-z]+:" "$INPUT_FILE" |
+    sed -E 's/^.*: ([A-Za-z]+):.*$/\1/' |
+    sort | uniq -c | sort -nr
+echo
+
+# Total warnings
+echo "--- Total warnings ---"
+grep -E "^(Core|Drivers)/[^:]+\.[ch]:[0-9]+:[0-9]+:" "$INPUT_FILE" | wc -l
+echo

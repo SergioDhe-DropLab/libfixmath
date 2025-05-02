@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# Run cppcheck
+cppcheck --addon=$HOME/.cppcheck_misra/my_misra.json \
+    --output-file=build/misra.log --enable=all \
+    --suppress-xml=$HOME/.cppcheck_misra/global_suppress.xml \
+    --suppress-xml=scripts/misra_suppress.xml \
+    --check-level=exhaustive \
+    --platform=unix32 \
+    -D__STATIC_FORCEINLINE="static inline" -DMISRA_CHECK -DUSE_HAL_DRIVER \
+    -DSTM32G071xx -UTEST \
+    --report-type=misra-c-2012 \
+    --inline-suppr -I Core/Inc \
+    Core/Src/comms Core/Src/components Core/Src/echem Core/Src/layers \
+    Core/Src/libfixmath Core/Src/nodes Core/Src/subcircuits -q
+
+#     --inline-suppr -I Core/Inc -I Drivers/STM32G0xx_HAL_Driver/Inc \
+# -I Drivers/STM32G0xx_HAL_Driver/Inc/Legacy -I Drivers/CMSIS/Device/ST/STM32G0xx/Include \
+# -I Drivers/CMSIS/Include \
+# Core/Src/components Core/Src/nodes Core/Src/layers -q
+
+# Store the exit status
+CPPCHECK_STATUS=$?
+
+# Check if cppcheck failed
+if [ $CPPCHECK_STATUS -ne 0 ]; then
+    echo "Error: cppcheck failed with exit code $CPPCHECK_STATUS"
+    exit $CPPCHECK_STATUS
+fi
+
+sed -i 's/\x1b\[[0-9;]*m//g' build/misra.log # remove color codes
+
+# Add new line after warning type
+sed -i 's/Mandatory: /Mandatory:\n/g' build/misra.log
+sed -i 's/Required: /Required:\n/g' build/misra.log
+sed -i 's/Advisory: /Advisory:\n/g' build/misra.log
+sed -i 's/style: /style:\n/g' build/misra.log
+sed -i 's/information: /information:\n/g' build/misra.log
+sed -i 's/note: /note:\n/g' build/misra.log
+sed -i 's/portability: /portability:\n/g' build/misra.log
+
+# Add new line after warning number and add '!!count!!' counting tag
+sed -i -E 's/ \[([a-z]+[A-Z]\w+)\]/\n[\1]/g' build/misra.log
+sed -i -E 's/ \[([0-9]+\.[0-9])\]/\n[\1]/g' build/misra.log
+
+# Add new line after arrow indicating warning location
+sed -i 's/\^$/^\n/g' build/misra.log
+
+# # Count, print and remove '!!count!!' tags
+# grep -o '!!count!!' build/misra.log | wc -l
+# sed -i 's/!!count!!//g' build/misra.log
+
+# Wrap lines to 80 characters
+fold -s -w 80 build/misra.log >temp.log
+mv temp.log build/misra.log
+
+# Print statistics
+./scripts/misra_stats build/misra.log

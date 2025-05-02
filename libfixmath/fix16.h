@@ -379,17 +379,33 @@ extern fix16_t fix16_ssub(fix16_t a, fix16_t b) FIXMATH_FUNC_ATTRS;
 
 // CUSTOM FUNCTION DECLARATIONS ////////////////////////////////////////////////
 
-// fix16_t fix16_aadd(fix16_t a, fix16_t b);
-// fix16_t fix16_asub(fix16_t a, fix16_t b);
-// fix16_t fix16_amul(fix16_t a, fix16_t b);
-// fix16_t fix16_adiv(fix16_t a, fix16_t b);
+fix16_t fix16_aadd(fix16_t a, fix16_t b);
+fix16_t fix16_asub(fix16_t a, fix16_t b);
+fix16_t fix16_amul(fix16_t a, fix16_t b);
+fix16_t fix16_adiv(fix16_t a, fix16_t b);
 
-// fix16_t fix16_amul_int32(fix16_t afix16, int32_t b32);
-// fix16_t fix16_axb_c(fix16_t a32, int32_t b32, int32_t c32);
+fix16_t fix16_amul_int32(fix16_t afix16, int32_t b32);
+fix16_t fix16_axb_c(fix16_t a32, int32_t b32, int32_t c32);
 
-// fix16_t fix16_div_big_int(int32_t a32, int32_t b32);
-// fix16_t fix16_div_huge_int(int32_t a64_hi, uint32_t a64_lo, int32_t b32);
+fix16_t fix16_div_big_int(int32_t a32, int32_t b32);
+fix16_t fix16_div_huge_int(int32_t a64_hi, uint32_t a64_lo, int32_t b32);
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// Assert function
+/**
+ * @brief  The assert_param macro is used for functions parameters check.
+ * @param  expr If expr is false, it calls fix16_assert_failed function
+ *         which reports the name of the source file and the source
+ *         line number of the call that failed.
+ *         If expr is true, it returns no value.
+ * @retval None
+ */
+#define fix16_assert(expr)                                                     \
+    ((expr) ? (void)0U                                                         \
+            : fix16_assert_failed((const uint8_t*)__FILE__, __LINE__))
+/* Exported functions
+ * ------------------------------------------------------- */
+void fix16_assert_failed(const uint8_t* file, uint32_t line);
 
 #endif

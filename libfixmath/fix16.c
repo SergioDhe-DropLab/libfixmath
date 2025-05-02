@@ -728,191 +728,212 @@ fix16_t fix16_lerp32(fix16_t inArg0, fix16_t inArg1, uint32_t inFract)
 
 // Assert on overflow fns //////////////////////////////////////////////////////
 
-// fix16_t fix16_aadd(fix16_t a, fix16_t b)
-// {
-//     fix16_t result = fix16_add(a, b);
+fix16_t fix16_aadd(fix16_t a, fix16_t b)
+{
+    fix16_t result = fix16_add(a, b);
 
-//     if (result == fix16_overflow)
-//     {
-//         hw_assert(false);
-//     }
+    if (result == fix16_overflow)
+    {
+        fix16_assert(0);
+    }
 
-//     return (result);
-// }
+    return (result);
+}
 
-// fix16_t fix16_asub(fix16_t a, fix16_t b)
-// {
-//     fix16_t result = fix16_sub(a, b);
+fix16_t fix16_asub(fix16_t a, fix16_t b)
+{
+    fix16_t result = fix16_sub(a, b);
 
-//     if (result == fix16_overflow)
-//     {
-//         hw_assert(false);
-//     }
+    if (result == fix16_overflow)
+    {
+        fix16_assert(0);
+    }
 
-//     return (result);
-// }
+    return (result);
+}
 
-// fix16_t fix16_amul(fix16_t a, fix16_t b)
-// {
-//     fix16_t result = fix16_mul(a, b);
+fix16_t fix16_amul(fix16_t a, fix16_t b)
+{
+    fix16_t result = fix16_mul(a, b);
 
-//     if (result == fix16_overflow)
-//     {
-//         hw_assert(false);
-//     }
+    if (result == fix16_overflow)
+    {
+        fix16_assert(0);
+    }
 
-//     return (result);
-// }
+    return (result);
+}
 
-// fix16_t fix16_adiv(fix16_t a, fix16_t b)
-// {
-//     fix16_t result = fix16_div(a, b);
+fix16_t fix16_adiv(fix16_t a, fix16_t b)
+{
+    fix16_t result = fix16_div(a, b);
 
-//     if (result == fix16_overflow)
-//     {
-//         hw_assert(false);
-//     }
+    if (result == fix16_overflow)
+    {
+        fix16_assert(0);
+    }
 
-//     return (result);
-// }
+    return (result);
+}
 
-// // Custom large int division fns
-// ///////////////////////////////////////////////
+// Custom large int division fns
+///////////////////////////////////////////////
 
-// /**
-//  * @brief Perform [a * b] calculation with overflow detection.
-//  *
-//  * @param afix16 Fixed point value for a.
-//  * @param b32 Signed 32-bit integer value for b.
-//  *
-//  * @return fix16_t Fixed point result. Returns 0x80000000U on overflow.
-//  */
-// fix16_t fix16_amul_int32(fix16_t afix16, int32_t b32)
-// {
-//     int64_t result = int64_mul_i32_i32(afix16, b32);
+#ifdef FIXMATH_NO_64BIT
 
-//     fix16_t retval = (fix16_t)result.lo;
+/**
+ * @brief Perform [a * b] calculation with overflow detection.
+ *
+ * @param afix16 Fixed point value for a.
+ * @param b32 Signed 32-bit integer value for b.
+ *
+ * @return fix16_t Fixed point result. Returns 0x80000000U on overflow.
+ */
+fix16_t fix16_amul_int32(fix16_t afix16, int32_t b32)
+{
+    int64_t result = int64_mul_i32_i32(afix16, b32);
 
-//     // High word should be 0x00000000 or 0xFFFFFFFFU
-//     if ((result.hi != 0) && ((uint32_t)result.hi != 0xFFFFFFFFU))
-//     {
-//         retval = fix16_overflow;
-//     }
-//     else
-//     {
-//         // MSB of low word must match bits of high word
-//         if (((uint32_t)result.hi & 0x80000000U) != (result.lo & 0x80000000U))
-//         {
-//             retval = fix16_overflow;
-//         }
-//     }
+    fix16_t retval = (fix16_t)result.lo;
 
-//     if (retval == fix16_overflow)
-//     {
-//         hw_assert(false);
-//         // printf("ASSERT!\t\t");
-//     }
+    // High word should be 0x00000000 or 0xFFFFFFFFU
+    if ((result.hi != 0) && ((uint32_t)result.hi != 0xFFFFFFFFU))
+    {
+        retval = fix16_overflow;
+    }
+    else
+    {
+        // MSB of low word must match bits of high word
+        if (((uint32_t)result.hi & 0x80000000U) != (result.lo & 0x80000000U))
+        {
+            retval = fix16_overflow;
+        }
+    }
 
-//     return (retval);
-// }
+    if (retval == fix16_overflow)
+    {
+        fix16_assert(0);
+        // printf("ASSERT!\t\t");
+    }
 
-// /**
-//  * @brief Perform [a * b / c] calculation with overflow detection.
-//  *
-//  * @param afix16 Fixed point value for a.
-//  * @param b32 Signed 32-bit integer value for b.
-//  * @param c32 Signed 32-bit integer value for c.
-//  *
-//  * @return fix16_t Fixed point result. Returns 0x80000000U on overflow.
-//  */
-// fix16_t fix16_axb_c(fix16_t afix16, int32_t b32, int32_t c32)
-// {
-//     fix16_t retval = fix16_overflow;
+    return (retval);
+}
 
-//     if (c32 != 0)
-//     {
-//         int64_t a_x_b  = int64_mul_i32_i32(afix16, b32);
-//         int64_t result = int64_div_i64_i32(a_x_b, c32);
+/**
+ * @brief Perform [a * b / c] calculation with overflow detection.
+ *
+ * @param afix16 Fixed point value for a.
+ * @param b32 Signed 32-bit integer value for b.
+ * @param c32 Signed 32-bit integer value for c.
+ *
+ * @return fix16_t Fixed point result. Returns 0x80000000U on overflow.
+ */
+fix16_t fix16_axb_c(fix16_t afix16, int32_t b32, int32_t c32)
+{
+    fix16_t retval = fix16_overflow;
 
-//         retval         = (fix16_t)result.lo;
+    if (c32 != 0)
+    {
+        int64_t a_x_b  = int64_mul_i32_i32(afix16, b32);
+        int64_t result = int64_div_i64_i32(a_x_b, c32);
 
-//         // High word should be 0x00000000 or 0xFFFFFFFFU
-//         if ((result.hi != 0) && ((uint32_t)result.hi != 0xFFFFFFFFU))
-//         {
-//             retval = fix16_overflow;
-//         }
-//         else
-//         {
-//             // MSB of low word must match bits of high word
-//             if (((uint32_t)result.hi & 0x80000000U) !=
-//                 (result.lo & 0x80000000U))
-//             {
-//                 retval = fix16_overflow;
-//             }
-//         }
+        retval         = (fix16_t)result.lo;
 
-//         if (retval == fix16_overflow)
-//         {
-//             hw_assert(false);
-//         }
-//     }
+        // High word should be 0x00000000 or 0xFFFFFFFFU
+        if ((result.hi != 0) && ((uint32_t)result.hi != 0xFFFFFFFFU))
+        {
+            retval = fix16_overflow;
+        }
+        else
+        {
+            // MSB of low word must match bits of high word
+            if (((uint32_t)result.hi & 0x80000000U) !=
+                (result.lo & 0x80000000U))
+            {
+                retval = fix16_overflow;
+            }
+        }
 
-//     return (retval);
-// }
+        if (retval == fix16_overflow)
+        {
+            fix16_assert(0);
+        }
+    }
 
-// fix16_t fix16_div_big_int(int32_t a32, int32_t b32)
-// {
-//     fix16_t retval = fix16_overflow;
+    return (retval);
+}
 
-//     // division by zero
-//     if (b32 != 0)
-//     {
-//         int64_t a64       = int64_from_int32(a32);
-//         a64               = int64_shift(a64, 32);
+fix16_t fix16_div_big_int(int32_t a32, int32_t b32)
+{
+    fix16_t retval = fix16_overflow;
 
-//         int64_t result_64 = int64_div_i64_i32(a64, b32);
+    // division by zero
+    if (b32 != 0)
+    {
+        int64_t a64       = int64_from_int32(a32);
+        a64               = int64_shift(a64, 32);
 
-//         if ((result_64.hi <= INT16_MAX) && (result_64.hi >= INT16_MIN))
-//         {
-//             retval              = signed_shift_left(result_64.hi, 16);
-//             uint32_t lo_shifted = result_64.lo >> 16U;
-//             retval |= (fix16_t)lo_shifted;
-//         }
-//         else
-//         {
-//             hw_assert(false);
-//         }
-//     }
+        int64_t result_64 = int64_div_i64_i32(a64, b32);
 
-//     return (retval);
-// }
+        if ((result_64.hi <= INT16_MAX) && (result_64.hi >= INT16_MIN))
+        {
+            retval              = signed_shift_left(result_64.hi, 16);
+            uint32_t lo_shifted = result_64.lo >> 16U;
+            retval |= (fix16_t)lo_shifted;
+        }
+        else
+        {
+            fix16_assert(0);
+        }
+    }
 
-// fix16_t fix16_div_huge_int(int32_t a64_hi, uint32_t a64_lo, int32_t b32)
-// {
+    return (retval);
+}
 
-//     fix16_t retval = fix16_overflow;
+fix16_t fix16_div_huge_int(int32_t a64_hi, uint32_t a64_lo, int32_t b32)
+{
 
-//     // division by zero
-//     if (b32 != 0)
-//     {
-//         int64_t a64       = {.hi = a64_hi, .lo = a64_lo};
-//         a64               = int64_shift(a64, 24);
+    fix16_t retval = fix16_overflow;
 
-//         int64_t result_64 = int64_div_i64_i32(a64, b32);
+    // division by zero
+    if (b32 != 0)
+    {
+        int64_t a64       = {.hi = a64_hi, .lo = a64_lo};
+        a64               = int64_shift(a64, 24);
 
-//         if ((result_64.hi <= INT8_MAX) && (result_64.hi >= INT8_MIN))
-//         {
-//             retval              = (fix16_t)signed_shift_left(result_64.hi,
-//             24); uint32_t lo_shifted = result_64.lo >> 8U; retval |=
-//             (fix16_t)lo_shifted;
-//         }
-//         else
-//         {
-//             hw_assert(false);
-//         }
-//     }
+        int64_t result_64 = int64_div_i64_i32(a64, b32);
 
-//     return (retval);
-// }
+        if ((result_64.hi <= INT8_MAX) && (result_64.hi >= INT8_MIN))
+        {
+            retval              = (fix16_t)signed_shift_left(result_64.hi, 24);
+            uint32_t lo_shifted = result_64.lo >> 8U;
+            retval |= (fix16_t)lo_shifted;
+        }
+        else
+        {
+            fix16_assert(0);
+        }
+    }
+
+    return (retval);
+}
+
+#endif /* FIXMATH_NO_64BIT */
+
+// Assert
+
+/**
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
+void fix16_assert_failed(const uint8_t* file, uint32_t line)
+{
+    (void)file;
+    (void)line;
+
+    // TODO
+}
 
 /*** end of file ***/

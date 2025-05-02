@@ -14,18 +14,18 @@ static fix16_t _fix16_exp_cache_value[4096] = {0};
 fix16_t fix16_exp(fix16_t inValue)
 {
     if (inValue == 0)
-        return fix16_one;
+        return (fix16_one);
     if (inValue == fix16_one)
-        return fix16_e;
+        return (fix16_e);
     if (inValue >= 681391)
-        return fix16_maximum;
+        return (fix16_maximum);
     if (inValue <= -772243)
-        return 0;
+        return (0);
 
 #ifndef FIXMATH_NO_CACHE
     fix16_t tempIndex = (inValue ^ (inValue >> 4)) & 0x0FFF;
     if (_fix16_exp_cache_index[tempIndex] == inValue)
-        return _fix16_exp_cache_value[tempIndex];
+        return (_fix16_exp_cache_value[tempIndex]);
 #endif
 
     /* The algorithm is based on the power series for exp(x):
@@ -47,7 +47,7 @@ fix16_t fix16_exp(fix16_t inValue)
     uint_fast8_t i;
     for (i = 2; i < 30; i++)
     {
-        term = fix16_mul(term, fix16_div(inValue, fix16_from_int(i)));
+        term = fix16_mul(term, fix16_div(inValue, fix16_from_int((int)i)));
         result += term;
 
         if ((term < 500) && ((i > 15) || (term < 20)))
@@ -62,22 +62,22 @@ fix16_t fix16_exp(fix16_t inValue)
     _fix16_exp_cache_value[tempIndex] = result;
 #endif
 
-    return result;
+    return (result);
 }
 
 fix16_t fix16_log(fix16_t inValue)
 {
-    fix16_t guess = fix16_from_int(2);
+    fix16_t guess = F16(2);
     fix16_t delta;
     int     scaling = 0;
     int     count   = 0;
 
     if (inValue <= 0)
-        return fix16_minimum;
+        return (fix16_minimum);
 
     // Bring the value to the most accurate range (1 < x < 100)
     const fix16_t e_to_fourth = 3578144;
-    while (inValue > fix16_from_int(100))
+    while (inValue > F16(100))
     {
         inValue = fix16_div(inValue, e_to_fourth);
         scaling += 4;
@@ -98,8 +98,8 @@ fix16_t fix16_log(fix16_t inValue)
         delta     = fix16_div(inValue - e, e);
 
         // It's unlikely that logarithm is very large, so avoid overshooting.
-        if (delta > fix16_from_int(3))
-            delta = fix16_from_int(3);
+        if (delta > F16(3))
+            delta = F16(3);
 
         guess += delta;
     } while ((count++ < 10) && ((delta > 1) || (delta < -1)));
@@ -113,7 +113,7 @@ static inline fix16_t fix16_rs(fix16_t x)
     return (x >> 1);
 #else
     fix16_t y = (x >> 1) + (x & 1);
-    return y;
+    return (y);
 #endif
 }
 
@@ -127,7 +127,7 @@ static fix16_t fix16__log2_inner(fix16_t x)
 {
     fix16_t result = 0;
 
-    while (x >= fix16_from_int(2))
+    while (x >= F16(2))
     {
         result++;
         x = fix16_rs(x);
@@ -141,7 +141,7 @@ static fix16_t fix16__log2_inner(fix16_t x)
     {
         x = fix16_mul(x, x);
         result <<= 1;
-        if (x >= fix16_from_int(2))
+        if (x >= F16(2))
         {
             result |= 1;
             x = fix16_rs(x);
@@ -149,11 +149,11 @@ static fix16_t fix16__log2_inner(fix16_t x)
     }
 #ifndef FIXMATH_NO_ROUNDING
     x = fix16_mul(x, x);
-    if (x >= fix16_from_int(2))
+    if (x >= F16(2))
         result++;
 #endif
 
-    return result;
+    return (result);
 }
 
 /**
@@ -175,7 +175,7 @@ fix16_t fix16_log2(fix16_t x)
     // If x == 0, the limit of log2(x)  as x -> 0 = -infinity.
     // log2(-ve) gives a complex result.
     if (x <= 0)
-        return fix16_overflow;
+        return (fix16_overflow);
 
     // If the input is less than one, the result is -log2(1.0 / in)
     if (x < fix16_one)
@@ -191,7 +191,7 @@ fix16_t fix16_log2(fix16_t x)
 
     // If input >= 1, just proceed as normal.
     // Note that x == fix16_one is a special case, where the answer is 0.
-    return fix16__log2_inner(x);
+    return (fix16__log2_inner(x));
 }
 
 /**
@@ -202,6 +202,6 @@ fix16_t fix16_slog2(fix16_t x)
     fix16_t retval = fix16_log2(x);
     // The only overflow possible is when the input is negative.
     if (retval == fix16_overflow)
-        return fix16_minimum;
-    return retval;
+        return (fix16_minimum);
+    return (retval);
 }

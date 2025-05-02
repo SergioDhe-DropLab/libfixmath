@@ -61,7 +61,8 @@ static void four_point_dft(INPUT_TYPE* input, unsigned input_stride,
 static void butterfly(fix16_t* real, fix16_t* imag, unsigned blocksize,
                       unsigned blockpairs)
 {
-    unsigned i, j;
+    unsigned i;
+    unsigned j;
     for (i = 0; i < blocksize; i++)
     {
         fix16_t  angle = fix16_pi * i / blocksize;
@@ -95,7 +96,7 @@ static uint32_t rbit_32(uint32_t x)
 {
 #if defined(__GNUC__) && defined(__ARM_ARCH_7M__)
     __asm__("rbit %0,%0" : "=r"(x) : "0"(x));
-    return x;
+    return (x);
 #else
     x = (((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1));
     x = (((x & 0xcccccccc) >> 2) | ((x & 0x33333333) << 2));
@@ -120,7 +121,7 @@ static int ilog2(unsigned x)
         x >>= 1;
         result++;
     }
-    return result;
+    return (result);
 }
 
 // Compute a transform of the real-valued input array, and store results in two
@@ -170,6 +171,6 @@ int main()
         printf("%d: %0.4f, %0.4f\n", i, fix16_to_float(real[i]),
 fix16_to_float(imag[i]));
     }
-    return 0;
+    return (0);
 }
 */

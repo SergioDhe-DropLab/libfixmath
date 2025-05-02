@@ -19,6 +19,10 @@ static inline int isspace(int c)
 #include <ctype.h>
 #endif
 
+#ifdef TEST
+#include <stdio.h>
+#endif
+
 static const uint32_t scales[8] = {
     /* 5 decimals is enough for full fix16_t precision */
     1, 10, 100, 1000, 10000, 100000, 100000, 100000};
@@ -32,18 +36,18 @@ static char* itoa_loop(char* buf, uint32_t scale, uint32_t value, bool skip)
         if (!skip || digit || scale == 1)
         {
             skip   = false;
-            *buf++ = '0' + digit;
+            *buf++ = '0' + (char)digit;
             value %= scale;
         }
 
         scale /= 10;
     }
-    return buf;
+    return (buf);
 }
 
 void fix16_to_str(fix16_t value, char* buf, int decimals)
 {
-    uint32_t uvalue = (value >= 0) ? value : -value;
+    uint32_t uvalue = (value >= 0) ? (uint32_t)value : (uint32_t)(-value);
     if (value < 0)
         *buf++ = '-';
 
@@ -51,7 +55,7 @@ void fix16_to_str(fix16_t value, char* buf, int decimals)
     unsigned intpart  = uvalue >> 16;
     uint32_t fracpart = uvalue & 0xFFFF;
     uint32_t scale    = scales[decimals & 7];
-    fracpart          = fix16_mul(fracpart, scale);
+    fracpart          = (uint32_t)fix16_mul((fix16_t)fracpart, (fix16_t)scale);
 
     if (fracpart >= scale)
     {
@@ -95,14 +99,16 @@ fix16_t fix16_from_str(const char* buf)
 
 #ifdef FIXMATH_NO_OVERFLOW
     if (count == 0)
-        return fix16_overflow;
+        return (fix16_overflow);
 #else
     if (count == 0 || count > 5 || intpart > 32768 ||
         (!negative && intpart > 32767))
-        return fix16_overflow;
+    {
+        return (fix16_overflow);
+    }
 #endif
 
-    fix16_t value = intpart << 16;
+    fix16_t value = (fix16_t)(intpart << 16);
 
     /* Decode the decimal part */
     if (*buf == '.' || *buf == ',')
@@ -118,14 +124,16 @@ fix16_t fix16_from_str(const char* buf)
             fracpart += *buf++ - '0';
         }
 
-        value += fix16_div(fracpart, scale);
+        value += fix16_div((fix16_t)fracpart, (fix16_t)scale);
     }
 
     /* Verify that there is no garbage left over */
     while (*buf != '\0')
     {
         if (!isdigit((unsigned char)*buf) && !isspace((unsigned char)*buf))
-            return fix16_overflow;
+        {
+            return (fix16_overflow);
+        }
 
         buf++;
     }

@@ -18,7 +18,7 @@ extern "C"
 #ifndef FIXMATH_NO_64BIT
     static inline int64_t int64_const(int32_t hi, uint32_t lo)
     {
-        return (((int64_t)hi << 32) | lo);
+        return (((uint64_t)hi << 32U) | lo);
     }
     static inline int64_t int64_from_int32(int32_t x)
     {
@@ -26,11 +26,11 @@ extern "C"
     }
     static inline int32_t int64_hi(int64_t x)
     {
-        return (x >> 32);
+        return ((uint64_t)x >> 32);
     }
     static inline uint32_t int64_lo(int64_t x)
     {
-        return (x & ((1ULL << 32) - 1));
+        return (x & ((int64_t)(1ULL << 32) - 1));
     }
 
     static inline int64_t int64_add(int64_t x, int64_t y)
@@ -47,7 +47,8 @@ extern "C"
     }
     static inline int64_t int64_shift(int64_t x, int8_t y)
     {
-        return (y < 0 ? (x >> -y) : (x << y));
+        return ((y < 0) ? ((uint64_t)x >> (uint8_t)-y)
+                        : ((uint64_t)x << (uint8_t)y));
     }
 
     static inline int64_t int64_mul_i32_i32(int32_t x, int32_t y)

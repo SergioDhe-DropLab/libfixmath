@@ -1,5 +1,5 @@
-#ifndef __fix16_trig_sin_lut_h__
-#define __fix16_trig_sin_lut_h__
+#ifndef fix16_trig_sin_lut_h__
+#define fix16_trig_sin_lut_h__
 
 static const uint32_t _fix16_sin_lut_count   = 102688;
 static uint16_t       _fix16_sin_lut[102688] = {

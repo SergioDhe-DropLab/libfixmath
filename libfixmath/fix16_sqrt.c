@@ -11,7 +11,7 @@
  */
 fix16_t fix16_sqrt(fix16_t inValue)
 {
-    uint8_t  neg    = (inValue < 0);
+    uint8_t  neg    = (inValue < 0) ? 1U : 0U;
     uint32_t num    = fix_abs(inValue);
     uint32_t result = 0;
     uint32_t bit;
@@ -21,37 +21,43 @@ fix16_t fix16_sqrt(fix16_t inValue)
     // this gives a good balance between time spent
     // in if vs. time spent in the while loop
     // when searching for the starting value.
-    if (num & 0xFFF00000U)
-        bit = (uint32_t)1 << 30;
+    if ((num & 0xFFF00000U) != 0U)
+    {
+        bit = (uint32_t)1U << 30U;
+    }
     else
-        bit = (uint32_t)1 << 18;
+    {
+        bit = (uint32_t)1U << 18U;
+    }
 
     while (bit > num)
-        bit >>= 2;
+    {
+        bit >>= 2U;
+    }
 
     // The main part is executed twice, in order to avoid
     // using 64 bit values in computations.
-    for (n = 0; n < 2; n++)
+    for (n = 0; n < 2U; n++)
     {
         // First we get the top 24 bits of the answer.
-        while (bit)
+        while (bit != 0U)
         {
-            if (num >= result + bit)
+            if (num >= (result + bit))
             {
                 num -= result + bit;
-                result = (result >> 1) + bit;
+                result = (result >> 1U) + bit; ///
             }
             else
             {
-                result = (result >> 1);
+                result = (result >> 1U);
             }
-            bit >>= 2;
+            bit >>= 2U;
         }
 
-        if (n == 0)
+        if (n == 0U)
         {
             // Then process it again to get the lowest 8 bits.
-            if (num > 65535)
+            if (num > 65535U)
             {
                 // The remainder 'num' is too large to be shifted left
                 // by 16, so we have to add 1 to result manually and
@@ -60,16 +66,16 @@ fix16_t fix16_sqrt(fix16_t inValue)
                 //	 = num + result^2 - (result + 0.5)^2
                 //	 = num - result - 0.5
                 num -= result;
-                num    = (num << 16) - 0x8000;
-                result = (result << 16) + 0x8000;
+                num    = (num << 16U) - 0x8000U;
+                result = (result << 16U) + 0x8000U;
             }
             else
             {
-                num <<= 16;
-                result <<= 16;
+                num <<= 16U;
+                result <<= 16U;
             }
 
-            bit = 1 << 14;
+            bit = (uint32_t)1U << 14U;
         }
     }
 

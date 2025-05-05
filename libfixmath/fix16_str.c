@@ -68,12 +68,7 @@ void fix16_to_str(fix16_t value, char* buf_start, int decimals)
     uint32_t fracpart = uvalue & 0xFFFFU;
     uint32_t scale    = scales[decimals & 7];
 
-#ifndef FIXMATH_NO_ROUNDING
     fracpart = (uint32_t)fix16_mul((fix16_t)fracpart, (fix16_t)(scale));
-#else
-    fracpart = (uint32_t)fix16_mul((fix16_t)fracpart, (fix16_t)(scale << 1U));
-    fracpart = (fracpart + 1U) >> 1; // round up
-#endif
 
     if (fracpart >= scale)
     {

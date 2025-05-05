@@ -128,6 +128,11 @@ extern "C"
 #define F16(x)                                                                 \
     ((fix16_t)(((x) >= 0) ? ((x)*65536.0 + 0.5) : ((x)*65536.0 - 0.5)))
 
+#ifdef TEST
+#define FLT(x) ((float)(x) / 65536.0)
+#define DBL(x) ((double)(x) / 65536.0)
+#endif
+
     static inline fix16_t fix16_abs(fix16_t x)
     {
         return ((fix16_t)(x < 0 ? -(uint32_t)x : (uint32_t)x));

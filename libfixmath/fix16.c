@@ -166,7 +166,7 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
     else
     {
 #ifndef FIXMATH_NO_OVERFLOW
-        if (upper != 0)
+        if (upper != 0U)
         {
             return (fix16_overflow);
         }
@@ -437,28 +437,30 @@ fix16_t fix16_smul(fix16_t inArg0, fix16_t inArg1)
 // Count leading zeros, using processor-specific instruction if available.
 #define clz(x) (__builtin_clzl(x) - (8 * sizeof(long) - 32))
 #else
-static uint8_t clz(uint32_t x)
+static uint8_t clz_fn(uint32_t x)
 {
     uint8_t result = 0;
-    if (x == 0)
+    if (x == 0U)
     {
-        return (32);
+        return (32U);
     }
 
     while (!(x & 0xF0000000U))
     {
-        result += 4;
-        x <<= 4;
+        result += 4U;
+        x <<= 4U;
     }
 
     while (!(x & 0x80000000U))
     {
-        result += 1;
-        x <<= 1;
+        result += 1U;
+        x <<= 1U;
     }
 
     return (result);
 }
+
+#define clz(x) clz_fn(x)
 #endif
 
 fix16_t fix16_div(fix16_t a, fix16_t b)

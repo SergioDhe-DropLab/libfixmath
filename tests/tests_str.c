@@ -160,7 +160,7 @@ int test_str_extended()
         bool negative = (value < 0);
         if (strcmp(goodbuf, testbuf) != 0)
         {
-            double d_sub = negative ? -0.00001 : 0.00001;
+            double d_sub = negative ? -0.0000050001 : 0.0000050001;
 
             exp_val -= d_sub;
             snprintf(goodbuf, 13, "%0.5f", exp_val);

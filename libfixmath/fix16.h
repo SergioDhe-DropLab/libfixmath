@@ -91,8 +91,8 @@ extern "C"
         return (a >> 16);
 #else
     if (a >= 0)
-        return ((a + (fix16_one >> 1)) / fix16_one);
-    return ((a - (fix16_one >> 1)) / fix16_one);
+        return ((a + (fix16_t)((uint32_t)fix16_one >> 1U)) / fix16_one);
+    return ((a - (fix16_t)((uint32_t)fix16_one >> 1U)) / fix16_one);
 #endif
     }
 

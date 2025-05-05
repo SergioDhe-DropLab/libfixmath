@@ -98,11 +98,11 @@ static uint32_t rbit_32(uint32_t x)
     __asm__("rbit %0,%0" : "=r"(x) : "0"(x));
     return (x);
 #else
-    x = (((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1));
-    x = (((x & 0xcccccccc) >> 2) | ((x & 0x33333333) << 2));
-    x = (((x & 0xf0f0f0f0) >> 4) | ((x & 0x0f0f0f0f) << 4));
-    x = (((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff) << 8));
-    return ((x >> 16) | (x << 16));
+    x = (((x & 0xAAAAAAAAU) >> 1U) | ((x & 0x55555555U) << 1U));
+    x = (((x & 0xCCCCCCCCU) >> 2U) | ((x & 0x33333333U) << 2U));
+    x = (((x & 0xF0F0F0F0U) >> 4U) | ((x & 0x0F0F0F0FU) << 4U));
+    x = (((x & 0xFF00FF00U) >> 8U) | ((x & 0x00FF00FFU) << 8U));
+    return ((x >> 16U) | (x << 16U));
 #endif
 }
 

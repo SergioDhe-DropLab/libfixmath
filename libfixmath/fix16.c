@@ -146,7 +146,7 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
 
 #ifndef FIXMATH_NO_OVERFLOW
     // The upper 17 bits should all be the same (the sign).
-    uint32_t upper = (product >> 47);
+    uint32_t upper = (product >> 47U);
 #endif
 
     if (product < 0)
@@ -174,10 +174,10 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
     }
 
 #ifdef FIXMATH_NO_ROUNDING
-    return product >> 16;
+    return product >> 16U;
 #else
-    fix16_t result = product >> 16;
-    result += (product & 0x8000) >> 15;
+    fix16_t result = product >> 16U;
+    result += (product & 0x8000) >> 15U;
 
     return (result);
 #endif
@@ -226,13 +226,13 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
 
 #ifndef FIXMATH_NO_OVERFLOW
     // The upper 17 bits should all be the same (the sign).
-    if (product_hi >> 31 != product_hi >> 15)
+    if (product_hi >> 31U != product_hi >> 15U)
         return fix16_overflow;
 #endif
 
 #ifdef FIXMATH_NO_ROUNDING
 
-    retval = (product_hi << 16) | (product_lo >> 16);
+    retval = (product_hi << 16) | (product_lo >> 16U);
 
 #else
 
@@ -244,7 +244,7 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
         // To handle that, we also have to subtract 1 for negative numbers.
         uint32_t product_lo_tmp = product_lo;
         product_lo -= 0x8000U;
-        product_lo -= (uint32_t)product_hi >> 31;
+        product_lo -= (uint32_t)product_hi >> 31U;
         if (product_lo > product_lo_tmp)
         {
             product_hi--;
@@ -277,8 +277,8 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
     uint32_t _a    = fix_abs(inArg0);
     uint32_t _b    = fix_abs(inArg1);
 
-    uint8_t  va[4] = {_a, (_a >> 8), (_a >> 16), (_a >> 24)};
-    uint8_t  vb[4] = {_b, (_b >> 8), (_b >> 16), (_b >> 24)};
+    uint8_t  va[4] = {_a, (_a >> 8U), (_a >> 16U), (_a >> 24U)};
+    uint8_t  vb[4] = {_b, (_b >> 8U), (_b >> 16U), (_b >> 24U)};
 
     uint32_t low   = 0;
     uint32_t mid   = 0;
@@ -385,7 +385,7 @@ fix16_t fix16_mul(fix16_t inArg0, fix16_t inArg1)
 #ifndef FIXMATH_NO_ROUNDING
     low += 0x8000;
 #endif
-    mid += (low >> 16);
+    mid += (low >> 16U);
 
 #ifndef FIXMATH_NO_OVERFLOW
     if (mid & 0x80000000U)
@@ -478,12 +478,12 @@ fix16_t fix16_div(fix16_t a, fix16_t b)
 
     // Kick-start the division a bit.
     // This improves speed in the worst-case scenarios where N and D are large
-    // It gets a lower estimate for the result by N/(D >> 17 + 1).
+    // It gets a lower estimate for the result by N/(D >> 17U + 1).
     if (divider & 0xFFF00000U)
     {
-        uint32_t shifted_div = ((divider >> 17) + 1);
+        uint32_t shifted_div = ((divider >> 17U) + 1);
         quotient             = remainder / shifted_div;
-        uint64_t tmp         = ((uint64_t)quotient * (uint64_t)divider) >> 17;
+        uint64_t tmp         = ((uint64_t)quotient * (uint64_t)divider) >> 17U;
         remainder -= (uint32_t)(tmp);
     }
 
@@ -525,7 +525,7 @@ fix16_t fix16_div(fix16_t a, fix16_t b)
     quotient++;
 #endif
 
-    fix16_t result = quotient >> 1;
+    fix16_t result = quotient >> 1U;
 
     // Figure out the sign of the result
     if ((a ^ b) & 0x80000000U)

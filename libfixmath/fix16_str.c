@@ -44,6 +44,7 @@ static char* itoa_loop(char* buf_start, uint32_t scale_start,
 
         scale /= 10U;
     }
+
     return (buf);
 }
 
@@ -66,7 +67,13 @@ void fix16_to_str(fix16_t value, char* buf_start, int decimals)
     unsigned intpart  = uvalue >> 16U;
     uint32_t fracpart = uvalue & 0xFFFFU;
     uint32_t scale    = scales[decimals & 7];
-    fracpart          = (uint32_t)fix16_mul((fix16_t)fracpart, (fix16_t)scale);
+
+#ifndef FIXMATH_NO_ROUNDING
+    fracpart = (uint32_t)fix16_mul((fix16_t)fracpart, (fix16_t)(scale));
+#else
+    fracpart = (uint32_t)fix16_mul((fix16_t)fracpart, (fix16_t)(scale << 1U));
+    fracpart = (fracpart + 1U) >> 1; // round up
+#endif
 
     if (fracpart >= scale)
     {
@@ -74,6 +81,8 @@ void fix16_to_str(fix16_t value, char* buf_start, int decimals)
         intpart++;
         fracpart -= scale;
     }
+
+    // fracpart = (uint32_t)fix16_add((fix16_t)fracpart, F16(0.5));
 
     /* Format integer part */
     buf = itoa_loop(buf, 10000, intpart, true);
@@ -83,6 +92,7 @@ void fix16_to_str(fix16_t value, char* buf_start, int decimals)
     {
         *buf = '.';
         buf++;
+
         buf = itoa_loop(buf, scale / 10U, fracpart, false);
     }
 

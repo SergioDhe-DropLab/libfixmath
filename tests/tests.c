@@ -77,7 +77,7 @@ int      main()
     TEST(test_sqrt());
     TEST(test_lerp());
     TEST(test_macros());
-    // TEST(test_str());
+    TEST(test_str());
 #endif
     return 0;
 }

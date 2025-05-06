@@ -1,7 +1,9 @@
 #ifndef libfixmath_fix16_h__
 #define libfixmath_fix16_h__
 
+#ifndef TEST
 #include "fix16_options.h"
+#endif
 
 // #define FIXMATH_OVERFLOW (INT32_MIN)
 

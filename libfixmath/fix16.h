@@ -1,13 +1,7 @@
 #ifndef libfixmath_fix16_h__
 #define libfixmath_fix16_h__
 
-// // OPTION DEFINES FOR STM32 USE - Sergio
-// #define FIXMATH_NO_CTYPE
-// #define FIXMATH_FAST_SIN
-// #define FIXMATH_NO_64BIT
-// #define FIXMATH_NO_CACHE
-// #define FIXMATH_NO_HARD_DIVISION
-// // #define FIXMATH_NO_ROUNDING
+#include "fix16_options.h"
 
 // #define FIXMATH_OVERFLOW (INT32_MIN)
 

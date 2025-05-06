@@ -126,7 +126,7 @@ extern "C"
    use the functions above.
 */
 #define F16(x)                                                                 \
-    ((fix16_t)(((x) >= 0) ? ((x)*65536.0 + 0.5) : ((x)*65536.0 - 0.5)))
+    ((fix16_t)(((x) >= 0) ? (((x)*65536.0) + 0.5) : (((x)*65536.0) - 0.5)))
 
 #ifdef TEST
 #define FLT(x) ((float)(x) / 65536.0)

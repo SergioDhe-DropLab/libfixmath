@@ -42,6 +42,8 @@ extern "C"
 #include <stdint.h>
 #endif
 
+#define FIXMATH_OVERFLOW ((fix16_t)0x80000000U)
+
     typedef int32_t      fix16_t;
 
     static const fix16_t FOUR_DIV_PI = 0x145F3; /**< Fix16 value of 4/PI */

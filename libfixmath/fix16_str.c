@@ -77,8 +77,6 @@ uint32_t fix16_to_str(fix16_t value, char* buf_start, int decimals)
         fracpart -= scale;
     }
 
-    // fracpart = (uint32_t)fix16_add((fix16_t)fracpart, F16(0.5));
-
     /* Format integer part */
     buf = itoa_loop(buf, 10000, intpart, true);
 

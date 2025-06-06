@@ -6,75 +6,98 @@
 int test_str_to()
 {
     char buf[13];
+    int  len;
 #ifndef FIXMATH_NO_ROUNDING // Test cases with ROUNDED results
 
-    fix16_to_str(fix16_from_dbl(1234.5678), buf, 4);
+    len = fix16_to_str(fix16_from_dbl(1234.5678), buf, 4);
     ASSERT_EQ_STR(buf, "1234.5678");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_from_dbl(-1234.5678), buf, 4);
+    len = fix16_to_str(fix16_from_dbl(-1234.5678), buf, 4);
     ASSERT_EQ_STR(buf, "-1234.5678");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(0, buf, 0);
+    len = fix16_to_str(0, buf, 0);
     ASSERT_EQ_STR(buf, "0");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(0, buf, 3);
+    len = fix16_to_str(0, buf, 3);
     ASSERT_EQ_STR(buf, "0.000");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_from_dbl(0.9), buf, 0);
+    len = fix16_to_str(fix16_from_dbl(0.9), buf, 0);
     ASSERT_EQ_STR(buf, "1");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(1, buf, 5);
+    len = fix16_to_str(1, buf, 5);
     ASSERT_EQ_STR(buf, "0.00002");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(-1, buf, 5);
+    len = fix16_to_str(-1, buf, 5);
     ASSERT_EQ_STR(buf, "-0.00002");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(65535, buf, 5);
+    len = fix16_to_str(65535, buf, 5);
     ASSERT_EQ_STR(buf, "0.99998");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(65535, buf, 4);
+    len = fix16_to_str(65535, buf, 4);
     ASSERT_EQ_STR(buf, "1.0000");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_maximum, buf, 5);
+    len = fix16_to_str(fix16_maximum, buf, 5);
     ASSERT_EQ_STR(buf, "32767.99998");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_minimum, buf, 5);
+    len = fix16_to_str(fix16_minimum, buf, 5);
     ASSERT_EQ_STR(buf, "-32768.00000");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
 #else // Test cases with TRUNCATED results
 
-    fix16_to_str(fix16_from_dbl(1234.5678), buf, 4);
+    len = fix16_to_str(fix16_from_dbl(1234.5678), buf, 4);
     ASSERT_EQ_STR(buf, "1234.5677");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_from_dbl(-1234.5678), buf, 4);
+    len = fix16_to_str(fix16_from_dbl(-1234.5678), buf, 4);
     ASSERT_EQ_STR(buf, "-1234.5677");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(0, buf, 0);
+    len = fix16_to_str(0, buf, 0);
     ASSERT_EQ_STR(buf, "0");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(0, buf, 3);
+    len = fix16_to_str(0, buf, 3);
     ASSERT_EQ_STR(buf, "0.000");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_from_dbl(0.9), buf, 0);
+    len = fix16_to_str(fix16_from_dbl(0.9), buf, 0);
     ASSERT_EQ_STR(buf, "0");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(1, buf, 5);
+    len = fix16_to_str(1, buf, 5);
     ASSERT_EQ_STR(buf, "0.00001");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(-1, buf, 5);
+    len = fix16_to_str(-1, buf, 5);
     ASSERT_EQ_STR(buf, "-0.00001");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(65535, buf, 5);
+    len = fix16_to_str(65535, buf, 5);
     ASSERT_EQ_STR(buf, "0.99998");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(65535, buf, 4);
+    len = fix16_to_str(65535, buf, 4);
     ASSERT_EQ_STR(buf, "0.9999");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_maximum, buf, 5);
+    len = fix16_to_str(fix16_maximum, buf, 5);
     ASSERT_EQ_STR(buf, "32767.99998");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
-    fix16_to_str(fix16_minimum, buf, 5);
+    len = fix16_to_str(fix16_minimum, buf, 5);
     ASSERT_EQ_STR(buf, "-32768.00000");
+    ASSERT_EQ_INT(len, (int)strlen(buf));
 
 #endif
 
@@ -145,28 +168,35 @@ int test_str_extended()
 
         double exp_val = rvalue;
         snprintf(goodbuf, 13, "%0.5f", exp_val);
-        fix16_to_str(value, testbuf, 5);
+        int  len     = fix16_to_str(value, testbuf, 5);
+
+        bool str_bad = (strcmp(goodbuf, testbuf) != 0);
+        bool len_bad = (len != (int)strlen(testbuf));
 
 #ifndef FIXMATH_NO_ROUNDING
 
-        if (strcmp(goodbuf, testbuf) != 0)
+        if (str_bad || len_bad)
         {
-            printf("Value %f/(fix16_t)%d gave %s, should be %s\n", rvalue,
-                   value, testbuf, goodbuf);
+            printf("Value %f/(fix16_t)%d gave %s (len=%d), should be %s "
+                   "(len=%d)\n",
+                   rvalue, value, testbuf, len, goodbuf, (int)strlen(goodbuf));
             return 1;
         }
 
 #else
         bool negative = (value < 0);
-        if (strcmp(goodbuf, testbuf) != 0)
+        if (str_bad || len_bad)
         {
             double d_sub = negative ? -0.0000050001 : 0.0000050001;
 
             exp_val -= d_sub;
             snprintf(goodbuf, 13, "%0.5f", exp_val);
-            fix16_to_str(value, testbuf, 5);
+            len          = fix16_to_str(value, testbuf, 5);
 
-            if (strcmp(goodbuf, testbuf) != 0)
+            bool str_bad = (strcmp(goodbuf, testbuf) != 0);
+            bool len_bad = (len != (int)strlen(testbuf));
+
+            if (str_bad || len_bad)
             {
                 printf("Value %f/(fix16_t)%d gave %s, should be %s\n", rvalue,
                        value, testbuf, goodbuf);

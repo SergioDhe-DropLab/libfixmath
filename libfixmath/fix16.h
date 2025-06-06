@@ -292,7 +292,7 @@ extern fix16_t fix16_ssub(fix16_t a, fix16_t b) FIXMATH_FUNC_ATTRS;
     /** Convert fix16_t value to a string.
      * Required buffer length for largest values is 13 bytes.
      */
-    extern void fix16_to_str(fix16_t value, char* buf, int decimals);
+    extern uint32_t fix16_to_str(fix16_t value, char* buf, int decimals);
 
     /** Convert string to a fix16_t value
      * Ignores spaces at beginning and end. Returns fix16_overflow if

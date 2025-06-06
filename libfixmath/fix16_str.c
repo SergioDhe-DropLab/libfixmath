@@ -48,7 +48,7 @@ static char* itoa_loop(char* buf_start, uint32_t scale_start,
     return (buf);
 }
 
-void fix16_to_str(fix16_t value, char* buf_start, int decimals)
+uint32_t fix16_to_str(fix16_t value, char* buf_start, int decimals)
 {
     char*    buf    = buf_start;
 
@@ -92,6 +92,8 @@ void fix16_to_str(fix16_t value, char* buf_start, int decimals)
     }
 
     *buf = '\0';
+
+    return (buf - buf_start);
 }
 
 fix16_t fix16_from_str(const char* buf_start)
